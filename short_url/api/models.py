@@ -12,8 +12,7 @@ class ShortUrl(models.Model):
     def __str__(self):
         return self.name
 
-    target_url = models.CharField(
-        max_length=200,
+    target_url = models.URLField(
         verbose_name=_('целевая ссылка')
     )
     name = models.CharField(
