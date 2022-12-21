@@ -17,10 +17,10 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from short_url.api.views import ShortUrlViewSet
+from short_url.api import views
 
 router = DefaultRouter()
-router.register(r'urls', ShortUrlViewSet, basename='shorturl')
+router.register(r'urls', views.ShortUrlViewSet, basename='shorturl')
 
 urlpatterns = [
     path('api/', include(router.urls)),
