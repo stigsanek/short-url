@@ -19,7 +19,7 @@ from django.views.generic import TemplateView
 from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
-    path('openapi', get_schema_view(
+    path('openapi/', get_schema_view(
         title="Short URL API",
         description="API service for URL shortening",
         public=True,
