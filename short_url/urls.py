@@ -15,15 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework.routers import DefaultRouter
-
-from short_url.api import views
-
-router = DefaultRouter()
-router.register(r'urls', views.UrlViewSet, basename='url')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/users/', views.CreateUserView.as_view()),
+    path('api/', include('short_url.api.urls')),
     path('admin/', admin.site.urls),
 ]

@@ -40,7 +40,7 @@ class UrlSerializer(serializers.HyperlinkedModelSerializer):
         """Create full url path"""
         url = self.context['request'].build_absolute_uri()
         result = urlparse(url)
-        return f'{result.scheme}//{result.netloc}/{value}'
+        return f'{result.scheme}://{result.netloc}/{value}'
 
 
 class UrlListSerializer(UrlSerializer):
