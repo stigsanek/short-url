@@ -1,11 +1,13 @@
-from rest_framework import viewsets
+from django.contrib.auth.models import User
+from rest_framework.generics import CreateAPIView
+from rest_framework.viewsets import ModelViewSet
 
 from short_url.api import serializers
 from short_url.api.models import Url
 from short_url.api.utils import generate_uid
 
 
-class UrlViewSet(viewsets.ModelViewSet):
+class UrlViewSet(ModelViewSet):
     """Views set for Url"""
 
     def get_queryset(self):
@@ -23,3 +25,9 @@ class UrlViewSet(viewsets.ModelViewSet):
             uid = generate_uid()
 
         serializer.save(uid=uid, user=self.request.user)
+
+
+class CreateUserView(CreateAPIView):
+    """Views set for create User"""
+    queryset = User.objects.all()
+    serializer_class = serializers.UserSerializer
