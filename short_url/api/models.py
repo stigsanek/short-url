@@ -3,35 +3,51 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class ShortUrl(models.Model):
+class Url(models.Model):
     """URL model"""
     class Meta:
         verbose_name = _('ссылка')
         verbose_name_plural = _('ссылки')
 
-    def __str__(self):
-        return self.name
-
     target_url = models.URLField(
-        verbose_name=_('целевая ссылка')
+        help_text=_('Целевая ссылка, на которую будет редирект')
     )
-    name = models.CharField(
+    uid = models.CharField(
         max_length=10,
         unique=True,
-        verbose_name=_('имя')
+        help_text=_('Автогенерируемый идентификатор')
+    )
+    custom_uid = models.CharField(
+        max_length=15,
+        null=True,
+        unique=True,
+        help_text=_(
+            'Дополнительный пользовательский идентификатор (опционально)'
+        )
+    )
+    name = models.CharField(
+        max_length=100,
+        null=True,
+        help_text=_('Имя ссылки (опционально)')
+    )
+    click_count = models.IntegerField(
+        default=0,
+        help_text=_('Количество переходов')
     )
     user = models.ForeignKey(
         to=User,
         on_delete=models.SET_NULL,
-        related_name='user_links',
         null=True,
-        verbose_name=_('пользователь')
+        help_text=_('Пользователь')
     )
     created_at = models.DateTimeField(
         auto_now_add=True,
-        verbose_name=_('дата создания')
+        help_text=_('Дата создания')
     )
     updated_at = models.DateTimeField(
         auto_now=True,
-        verbose_name=_('дата обновления')
+        help_text=_('Дата обновления')
     )
+
+    def __str__(self):
+        return self.uid

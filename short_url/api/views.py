@@ -1,20 +1,20 @@
 from rest_framework import viewsets
 
 from short_url.api import serializers
-from short_url.api.models import ShortUrl
+from short_url.api.models import Url
 
 
-class ShortUrlViewSet(viewsets.ModelViewSet):
-    """Views set for ShortUrl"""
+class UrlViewSet(viewsets.ModelViewSet):
+    """Views set for Url"""
 
     def get_queryset(self):
-        return ShortUrl.objects.filter(user_id=self.request.user.id)
+        return Url.objects.filter(user_id=self.request.user.id)
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return serializers.ShortUrlListSerializer
+            return serializers.UrlListSerializer
 
-        return serializers.ShortUrlSerializer
+        return serializers.UrlSerializer
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

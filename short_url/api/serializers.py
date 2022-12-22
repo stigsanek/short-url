@@ -2,38 +2,54 @@ from urllib.parse import urlparse
 
 from rest_framework import serializers
 
-from short_url.api.models import ShortUrl
+from short_url.api.models import Url
 
 
-class ShortUrlSerializer(serializers.HyperlinkedModelSerializer):
-    """Serializer for one ShortUrl"""
+class UrlSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for one Url"""
     class Meta:
-        model = ShortUrl
+        model = Url
         fields = [
             'id',
             'target_url',
+            'uid',
+            'custom_uid',
             'name',
-            'short_url',
+            'click_count',
             'created_at',
-            'updated_at'
+            'updated_at',
+            'link',
+            'custom_link'
         ]
 
-    short_url = serializers.SerializerMethodField('get_short_url')
+    uid = serializers.ReadOnlyField()
+    click_count = serializers.ReadOnlyField()
+    link = serializers.SerializerMethodField('get_link')
+    custom_link = serializers.SerializerMethodField('get_custom_link')
 
-    def get_short_url(self, obj):
-        """Get short url value"""
+    def get_link(self, obj):
+        """Get link"""
+        return self._create_path(obj.uid)
+
+    def get_custom_link(self, obj):
+        """Get custom link"""
+        if obj.custom_uid:
+            return self._create_path(obj.custom_uid)
+
+    def _create_path(self, value):
+        """Create full url path"""
         url = self.context['request'].build_absolute_uri()
         result = urlparse(url)
-        return f'{result.scheme}//{result.netloc}/{obj.name}'
+        return f'{result.scheme}//{result.netloc}/{value}'
 
 
-class ShortUrlListSerializer(ShortUrlSerializer):
-    """Serializer for list ShortUrl"""
-    class Meta(ShortUrlSerializer.Meta):
+class UrlListSerializer(UrlSerializer):
+    """Serializer for list Url"""
+    class Meta(UrlSerializer.Meta):
         fields = [
             'id',
             'url',
             'target_url',
-            'name',
-            'short_url'
+            'link',
+            'custom_link'
         ]

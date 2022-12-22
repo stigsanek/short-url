@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from short_url.api.models import ShortUrl
+from short_url.api.models import Url
 
 
-@admin.register(ShortUrl)
-class ShortUrlAdmin(admin.ModelAdmin):
+@admin.register(Url)
+class UrlAdmin(admin.ModelAdmin):
     list_display = (
         'target_url', 'name', 'user', 'created_at', 'updated_at'
     )
