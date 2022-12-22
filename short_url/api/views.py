@@ -2,6 +2,7 @@ from rest_framework import viewsets
 
 from short_url.api import serializers
 from short_url.api.models import Url
+from short_url.api.utils import generate_uid
 
 
 class UrlViewSet(viewsets.ModelViewSet):
@@ -17,4 +18,8 @@ class UrlViewSet(viewsets.ModelViewSet):
         return serializers.UrlSerializer
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        uid = generate_uid()
+        while Url.objects.filter(uid=uid).exists():
+            uid = generate_uid()
+
+        serializer.save(uid=uid, user=self.request.user)
