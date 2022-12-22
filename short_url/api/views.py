@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
 from short_url.api import serializers
@@ -9,6 +11,8 @@ from short_url.api.utils import generate_uid
 
 class UrlViewSet(ModelViewSet):
     """Views set for Url"""
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Url.objects.filter(user_id=self.request.user.id)
