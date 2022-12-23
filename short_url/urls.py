@@ -42,6 +42,6 @@ urlpatterns = [
         extra_context={'schema_url': 'openapi-schema'}
     )),
     path('api/', include(router.urls)),
-    path('api/auth-token/', CustomAuthToken.as_view()),
+    path('api/auth-token/', CustomAuthToken.as_view(), name='auth-token'),
     path('admin/', admin.site.urls)
 ]

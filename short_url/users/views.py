@@ -27,9 +27,9 @@ class CustomAuthToken(ObtainAuthToken):
 
 
 class UserViewSet(ModelViewSet):
-    """Views set for Link"""
+    """Views set for User"""
     authentication_classes = [TokenAuthentication]
-    queryset = User.objects.all()
+    queryset = User.objects.order_by('id')
     serializer_class = serializers.UserSerializer
 
     def get_permissions(self):
@@ -39,7 +39,7 @@ class UserViewSet(ModelViewSet):
         return [IsAuthenticated()]
 
     def perform_update(self, serializer):
-        if self.request.user.id != self.kwargs.get('pk'):
+        if self.request.user.id != int(self.kwargs['pk']):
             raise PermissionDenied(
                 _('You have no rights to change another user')
             )
@@ -47,7 +47,7 @@ class UserViewSet(ModelViewSet):
         serializer.save()
 
     def perform_destroy(self, instance):
-        if self.request.user.id != self.kwargs.get('pk'):
+        if self.request.user.id != int(self.kwargs['pk']):
             raise PermissionDenied(
                 _('You do not have permission to delete another user')
             )
