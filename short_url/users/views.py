@@ -33,7 +33,7 @@ class UserViewSet(ModelViewSet):
     serializer_class = serializers.UserSerializer
 
     def get_permissions(self):
-        if self.action == 'create' and self.request.method == 'POST':
+        if self.action == 'create':
             return super().get_permissions()
 
         return [IsAuthenticated()]
