@@ -16,7 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
+from rest_framework.routers import SimpleRouter
 from rest_framework.schemas import get_schema_view
+
+from short_url.links.views import LinkViewSet
+from short_url.users.views import CustomAuthToken, UserViewSet
+
+router = SimpleRouter()
+router.register(r'links', LinkViewSet, basename='link')
+router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [
     path('openapi/', get_schema_view(
@@ -33,6 +41,7 @@ urlpatterns = [
         template_name='swagger-ui.html',
         extra_context={'schema_url': 'openapi-schema'}
     )),
-    path('api/', include('short_url.api.urls')),
-    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api/auth-token/', CustomAuthToken.as_view()),
+    path('admin/', admin.site.urls)
 ]

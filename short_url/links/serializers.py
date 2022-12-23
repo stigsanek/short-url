@@ -1,15 +1,14 @@
 from urllib.parse import urlparse
 
-from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from short_url.api.models import Url
+from short_url.links.models import Link
 
 
-class UrlSerializer(serializers.HyperlinkedModelSerializer):
-    """Serializer for one Url"""
+class LinkSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for one Link"""
     class Meta:
-        model = Url
+        model = Link
         fields = [
             'id',
             'target_url',
@@ -43,9 +42,9 @@ class UrlSerializer(serializers.HyperlinkedModelSerializer):
         return f'{result.scheme}://{result.netloc}/{value}'
 
 
-class UrlListSerializer(UrlSerializer):
-    """Serializer for list Url"""
-    class Meta(UrlSerializer.Meta):
+class LinkListSerializer(LinkSerializer):
+    """Serializer for list Link"""
+    class Meta(LinkSerializer.Meta):
         fields = [
             'id',
             'url',
@@ -53,28 +52,3 @@ class UrlListSerializer(UrlSerializer):
             'link',
             'custom_link'
         ]
-
-
-class UserSerializer(serializers.ModelSerializer):
-    """Serializer for User"""
-    class Meta:
-        model = User
-        fields = [
-            'username',
-            'first_name',
-            'last_name',
-            'email',
-            'password'
-        ]
-        extra_kwargs = {
-            'password': {'write_only': True}
-        }
-
-    def create(self, validated_data):
-        password = validated_data.pop('password')
-
-        user = self.Meta.model.objects.create(**validated_data)
-        user.set_password(password)
-        user.save()
-
-        return user

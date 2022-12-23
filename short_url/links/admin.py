@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from short_url.api.models import Url
+from short_url.links.models import Link
 
 
-@admin.register(Url)
+@admin.register(Link)
 class UrlAdmin(admin.ModelAdmin):
     list_display = (
         'target_url', 'name', 'user', 'created_at', 'updated_at'

@@ -3,8 +3,8 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class Url(models.Model):
-    """URL model"""
+class Link(models.Model):
+    """Link model"""
     class Meta:
         verbose_name = _('link')
         verbose_name_plural = _('links')
