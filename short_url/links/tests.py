@@ -11,16 +11,14 @@ class TestLinks(APITestCase):
     fixtures = ['users.json', 'links.json']
 
     def setUp(self):
-        self.first_user = User.objects.get(pk=1)
-        self.second_user = User.objects.get(pk=2)
-        self.first_user_token = Token.objects.create(user=self.first_user)
-
+        self.user = User.objects.get(pk=1)
         self.first_link = Link.objects.get(pk=1)
-        self.second_link = Link.objects.get(pk=1)
+        self.second_link = Link.objects.get(pk=2)
 
     def _auth(self):
+        token = Token.objects.create(user=self.user)
         self.client.credentials(
-            HTTP_AUTHORIZATION='Token ' + self.first_user_token.key
+            HTTP_AUTHORIZATION='Token ' + token.key
         )
 
     def test_list(self):
@@ -38,10 +36,40 @@ class TestLinks(APITestCase):
         self.assertEqual(data[0]['target_url'], self.first_link.target_url)
 
     def test_create(self):
-        pass
+        url = reverse_lazy('link-list')
+        data = {'target_url': 'create'}
+
+        resp = self.client.post(path=url, data=data)
+        self.assertEqual(resp.status_code, 401)
+
+        self._auth()
+
+        resp = self.client.post(path=url, data=data)
+        self.assertEqual(resp.status_code, 400)
+
+        data['target_url'] = 'https://www.djangoproject.com/'
+        resp = self.client.post(path=url, data=data)
+
+        self.assertEqual(resp.status_code, 201)
+        self.assertTrue(
+            Link.objects.filter(target_url=data['target_url']).exists()
+        )
 
     def test_detail(self):
-        pass
+        url_first = reverse_lazy('link-detail', args=[self.first_link.pk])
+        url_second = reverse_lazy('link-detail', args=[self.second_link.pk])
+
+        resp = self.client.get(url_second)
+        self.assertEqual(resp.status_code, 401)
+
+        self._auth()
+
+        resp = self.client.get(url_second)
+        self.assertEqual(resp.status_code, 404)
+
+        resp = self.client.get(url_first)
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()['name'], self.first_link.name)
 
     def test_update(self):
         pass
