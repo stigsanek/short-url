@@ -13,7 +13,7 @@ class LinkViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Link.objects.filter(user_id=self.request.user.pk)
+        return Link.objects.filter(user_id=self.request.user.pk).order_by('pk')
 
     def get_serializer_class(self):
         if self.action == 'list':
