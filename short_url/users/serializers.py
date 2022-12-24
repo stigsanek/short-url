@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for User"""
     class Meta:
         model = User
@@ -42,3 +42,13 @@ class UserSerializer(serializers.ModelSerializer):
             user.save()
 
         return user
+
+
+class UserListSerializer(UserSerializer):
+    """Serializer for list User"""
+    class Meta(UserSerializer.Meta):
+        fields = [
+            'id',
+            'url',
+            'username'
+        ]

@@ -74,8 +74,8 @@ class TestUsers(APITestCase):
         )
 
     def test_detail(self):
-        url_first = reverse_lazy('user-detail', args=[self.first_user.id])
-        url_second = reverse_lazy('user-detail', args=[self.second_user.id])
+        url_first = reverse_lazy('user-detail', args=[self.first_user.pk])
+        url_second = reverse_lazy('user-detail', args=[self.second_user.pk])
 
         resp = self.client.get(url_first)
         self.assertEqual(resp.status_code, 401)
@@ -90,8 +90,8 @@ class TestUsers(APITestCase):
         self.assertEqual(resp.json()['username'], self.second_user.username)
 
     def test_update(self):
-        url_first = reverse_lazy('user-detail', args=[self.first_user.id])
-        url_second = reverse_lazy('user-detail', args=[self.second_user.id])
+        url_first = reverse_lazy('user-detail', args=[self.first_user.pk])
+        url_second = reverse_lazy('user-detail', args=[self.second_user.pk])
 
         resp = self.client.put(url_first)
         self.assertEqual(resp.status_code, 401)
@@ -112,8 +112,8 @@ class TestUsers(APITestCase):
         )
 
     def test_partial_update(self):
-        url_first = reverse_lazy('user-detail', args=[self.first_user.id])
-        url_second = reverse_lazy('user-detail', args=[self.second_user.id])
+        url_first = reverse_lazy('user-detail', args=[self.first_user.pk])
+        url_second = reverse_lazy('user-detail', args=[self.second_user.pk])
 
         resp = self.client.patch(url_first)
         self.assertEqual(resp.status_code, 401)
@@ -134,8 +134,8 @@ class TestUsers(APITestCase):
         )
 
     def test_destroy(self):
-        url_first = reverse_lazy('user-detail', args=[self.first_user.id])
-        url_second = reverse_lazy('user-detail', args=[self.second_user.id])
+        url_first = reverse_lazy('user-detail', args=[self.first_user.pk])
+        url_second = reverse_lazy('user-detail', args=[self.second_user.pk])
 
         resp = self.client.delete(url_first)
         self.assertEqual(resp.status_code, 401)
