@@ -5,6 +5,8 @@ from rest_framework.test import APITestCase
 
 from short_url.links.models import Link
 
+FAKE_URL = 'https://www.djangoproject.com/'
+
 
 class TestLinks(APITestCase):
     """Tests for links"""
@@ -37,7 +39,10 @@ class TestLinks(APITestCase):
 
     def test_create(self):
         url = reverse_lazy('link-list')
-        data = {'target_url': 'create'}
+        data = {
+            'target_url': 'create',
+            'custom_uid': 'drf'
+        }
 
         resp = self.client.post(path=url, data=data)
         self.assertEqual(resp.status_code, 401)
@@ -47,9 +52,12 @@ class TestLinks(APITestCase):
         resp = self.client.post(path=url, data=data)
         self.assertEqual(resp.status_code, 400)
 
-        data['target_url'] = 'https://www.djangoproject.com/'
+        data['target_url'] = FAKE_URL
         resp = self.client.post(path=url, data=data)
+        self.assertEqual(resp.status_code, 400)
 
+        data['custom_uid'] = 'test'
+        resp = self.client.post(path=url, data=data)
         self.assertEqual(resp.status_code, 201)
         self.assertTrue(
             Link.objects.filter(target_url=data['target_url']).exists()
@@ -72,10 +80,66 @@ class TestLinks(APITestCase):
         self.assertEqual(resp.json()['name'], self.first_link.name)
 
     def test_update(self):
-        pass
+        url_first = reverse_lazy('link-detail', args=[self.first_link.pk])
+        url_second = reverse_lazy('link-detail', args=[self.second_link.pk])
+
+        resp = self.client.put(url_second)
+        self.assertEqual(resp.status_code, 401)
+
+        self._auth()
+
+        resp = self.client.put(url_second)
+        self.assertEqual(resp.status_code, 404)
+
+        data = {
+            'target_url': FAKE_URL,
+            'custom_uid': 'test',
+            'name': 'test'
+        }
+
+        resp = self.client.put(path=url_first, data=data)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(
+            Link.objects.filter(custom_uid=data['custom_uid']).exists()
+        )
 
     def test_partial_update(self):
-        pass
+        url_first = reverse_lazy('link-detail', args=[self.first_link.pk])
+        url_second = reverse_lazy('link-detail', args=[self.second_link.pk])
+
+        resp = self.client.patch(url_second)
+        self.assertEqual(resp.status_code, 401)
+
+        self._auth()
+
+        resp = self.client.patch(url_second)
+        self.assertEqual(resp.status_code, 404)
+
+        data = {
+            'custom_uid': 'test',
+            'name': 'test'
+        }
+
+        resp = self.client.patch(path=url_first, data=data)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(
+            Link.objects.filter(custom_uid=data['custom_uid']).exists()
+        )
 
     def test_destroy(self):
-        pass
+        url_first = reverse_lazy('link-detail', args=[self.first_link.pk])
+        url_second = reverse_lazy('link-detail', args=[self.second_link.pk])
+
+        resp = self.client.delete(url_second)
+        self.assertEqual(resp.status_code, 401)
+
+        self._auth()
+
+        resp = self.client.delete(url_second)
+        self.assertEqual(resp.status_code, 404)
+
+        resp = self.client.delete(url_first)
+        self.assertEqual(resp.status_code, 204)
+        self.assertFalse(
+            Link.objects.filter(pk=self.first_link.pk).exists()
+        )
