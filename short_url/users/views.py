@@ -12,7 +12,7 @@ from short_url.users import serializers
 
 
 class CustomAuthToken(ObtainAuthToken):
-    """Custom ObtainAuthToken"""
+    """Returns authentication token for API usage"""
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
@@ -27,7 +27,16 @@ class CustomAuthToken(ObtainAuthToken):
 
 
 class UserViewSet(ModelViewSet):
-    """Views set for User"""
+    """
+    Views set for User
+
+    list: Returns user list
+    create: Create user
+    retrieve: Returns user
+    update: Full update user
+    partial_update: Partial update user
+    delete: Delete user
+    """
     authentication_classes = [TokenAuthentication]
     queryset = User.objects.order_by('pk')
 

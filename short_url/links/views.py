@@ -8,7 +8,16 @@ from short_url.links.utils import generate_uid
 
 
 class LinkViewSet(ModelViewSet):
-    """Views set for Link"""
+    """
+    Views set for Link
+
+    list: Returns link list
+    create: Create link
+    retrieve: Returns link
+    update: Full update link
+    partial_update: Partial update link
+    delete: Delete link
+    """
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
