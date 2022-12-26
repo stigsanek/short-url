@@ -21,6 +21,7 @@ from rest_framework.schemas import get_schema_view
 
 from short_url.links.views import LinkViewSet
 from short_url.users.views import CustomAuthToken, UserViewSet
+from short_url.views import redirect_view
 
 router = SimpleRouter()
 router.register(r'links', LinkViewSet, basename='link')
@@ -36,12 +37,13 @@ urlpatterns = [
     path('redoc/', TemplateView.as_view(
         template_name='redoc.html',
         extra_context={'schema_url': 'openapi-schema'}
-    )),
+    ), name='redoc'),
     path('swagger-ui/', TemplateView.as_view(
         template_name='swagger-ui.html',
         extra_context={'schema_url': 'openapi-schema'}
-    )),
+    ), name='swagger'),
     path('api/', include(router.urls)),
     path('api/auth-token/', CustomAuthToken.as_view(), name='auth-token'),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls, name='admin'),
+    path('<slug:slug>/', redirect_view, name='redirect'),
 ]
