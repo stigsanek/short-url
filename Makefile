@@ -1,10 +1,6 @@
 run:
 	poetry run python manage.py runserver
 
-locale:
-	poetry run python manage.py makemessages -l en
-	poetry run python manage.py compilemessages
-
 migrate:
 	poetry run python manage.py makemigrations
 	poetry run python manage.py migrate
