@@ -6,7 +6,7 @@
 
 ## Description
 
-"Short URL" is API service for URL shortening.
+"Short URL" is API service for URL shortening. Service work by transforming any long URL into a shorter, more readable link. When a user clicks the shortened version, they’re automatically forwarded to the destination URL. Think of a short URL as a more descriptive and memorable nickname for your long webpage address.
 
 ## Usage
 
