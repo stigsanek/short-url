@@ -74,9 +74,7 @@ DEBUG=True
  ...
  ...
  ...
- Applying statuses.0001_initial... OK
- Applying tasks.0001_initial... OK
- Applying tasks.0002_initial... OK
+ Applying links.0001_initial... OK
 ```
 
 * Run application:
@@ -111,7 +109,7 @@ For production mode, you need to create an `.env.prod` file:
 
 ```
 # Database environment
-POSTGRES_DB=task_manager
+POSTGRES_DB=short_url
 POSTGRES_USER=user
 POSTGRES_PASSWORD=password
 POSTGRES_HOST=db
