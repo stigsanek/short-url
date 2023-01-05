@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _
 from django.views.generic import TemplateView
 from rest_framework.routers import SimpleRouter
 from rest_framework.schemas import get_schema_view
