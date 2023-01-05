@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView
 from rest_framework.routers import SimpleRouter
 from rest_framework.schemas import get_schema_view
@@ -29,10 +30,10 @@ router.register(r'users', UserViewSet, basename='user')
 
 urlpatterns = [
     path('openapi/', get_schema_view(
-        title="Short URL API",
-        description="API service for URL shortening",
+        title='Short URL API',
+        description=_('API service for URL shortening'),
         public=True,
-        version="v1"
+        version='v1'
     ), name='openapi-schema'),
     path('redoc/', TemplateView.as_view(
         template_name='redoc.html',
