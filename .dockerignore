@@ -1,3 +1,10 @@
-.venv
-.pytest_cache
+.git/
+
+.pytest_cache/
+.venv/
+
 .env
+*.sqlite3
+
+.idea/
+.vscode/
