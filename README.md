@@ -124,7 +124,7 @@ DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:$
 #### Run development mode
 
 ```bash
->> docker-compose -f compose.dev.yml up -d
+>> docker-compose -f compose.dev.yml up -d --build
 
  ...
  ...
@@ -138,7 +138,7 @@ Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
 #### Run production mode
 
 ```bash
->> docker-compose -f compose.prod.yml up -d
+>> docker-compose -f compose.prod.yml up -d --build
 
  ...
  ...
