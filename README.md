@@ -92,7 +92,7 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CTRL-BREAK.
 ```
 
-* Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your browser.
+* Open [http://127.0.0.1:8000/swagger-ui/](http://127.0.0.1:8000/swagger-ui/) or [http://127.0.0.1:8000/redoc/](http://127.0.0.1:8000/redoc/) in your browser for to see all the API methods.
 
 ### 2. Docker
 
